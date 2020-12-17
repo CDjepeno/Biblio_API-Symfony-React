@@ -22,13 +22,12 @@ class Genre
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"list_genre","list_genrefull"})
+     * @Groups({"list_genre", "list_genre_show"})
      */
     private $title;
 
     /**
      * @ORM\OneToMany(targetEntity=Book::class, mappedBy="genre")
-     * @Groups({"list_genrefull"})
      * 
      */
     private $books;
