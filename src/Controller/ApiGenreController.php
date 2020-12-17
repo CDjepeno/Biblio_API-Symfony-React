@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ApiGenreController extends AbstractController
 {
@@ -51,7 +52,7 @@ class ApiGenreController extends AbstractController
     /**
      * @Route("/api/genres", name="api_genre_create", methods={"POST"})
      */
-    public function create(Genre $genre, SerializerInterface $serializer, EntityManagerInterface $em, Request $request): Response
+    public function create(SerializerInterface $serializer, EntityManagerInterface $em, Request $request, ValidatorInterface $validator): Response
     {
         $data  = $request->getContent();
 
@@ -61,6 +62,12 @@ class ApiGenreController extends AbstractController
             'json'      
         );
         
+        $error = $validator->validate($genre);
+        if(count($error)){
+            $errorJson=$serializer->serialize($error, 'json');
+            return  new JsonResponse($errorJson, Response::HTTP_BAD_REQUEST);
+        }
+
         $em->persist($genre);
         $em->flush();
 
@@ -74,7 +81,7 @@ class ApiGenreController extends AbstractController
     /**
      * @Route("/api/genres/{id}", name="api_genre_update", methods={"PUT"})
      */
-    public function update(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, Genre $genre): Response
+    public function update(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, Genre $genre, ValidatorInterface $validator): Response
     {
         $data = $request->getContent();
 
@@ -84,6 +91,12 @@ class ApiGenreController extends AbstractController
             'json',
             ['object_to_populate'=> $genre]
         );
+
+        $error = $validator->validate($genre);
+        if(count($error)){
+            $errorJson=$serializer->serialize($error, 'json');
+            return  new JsonResponse($errorJson, Response::HTTP_BAD_REQUEST);
+        }
 
         $em->persist($genre);
         $em->flush();

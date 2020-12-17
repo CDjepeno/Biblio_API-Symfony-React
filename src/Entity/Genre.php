@@ -7,9 +7,12 @@ use App\Repository\GenreRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=GenreRepository::class)
+ * @UniqueEntity("title", message="Un genre possède déjà ce nom")
  */
 class Genre
 {
@@ -23,6 +26,12 @@ class Genre
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"list_genre", "list_genre_show"})
+     * @Assert\Length(
+     *      min=2,
+     *      max=50,
+     *      minMessage="Votre genre ne doit pas comporter moins de 2 caractères",
+     *      maxMessage="Votre genre ne doit pas comporter plus de 50 caractères"
+     * )
      */
     private $title;
 
