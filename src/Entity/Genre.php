@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\GenreRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\GenreRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=GenreRepository::class)
@@ -21,11 +22,14 @@ class Genre
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"list_genre","list_genrefull"})
      */
     private $title;
 
     /**
      * @ORM\OneToMany(targetEntity=Book::class, mappedBy="genre")
+     * @Groups({"list_genrefull"})
+     * 
      */
     private $books;
 
@@ -43,7 +47,7 @@ class Genre
     {
         return $this->title;
     }
-    
+
     public function getTitle(): ?string
     {
         return $this->title;
