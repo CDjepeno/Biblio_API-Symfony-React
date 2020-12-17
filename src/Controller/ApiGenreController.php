@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class ApiGenreController extends AbstractController
 {
@@ -50,9 +51,10 @@ class ApiGenreController extends AbstractController
     /**
      * @Route("/api/genres", name="api_genre_create", methods={"POST"})
      */
-    public function create(Request $request, SerializerInterface $serializer, EntityManagerInterface $em): Response
+    public function create(Genre $genre, SerializerInterface $serializer, EntityManagerInterface $em, Request $request): Response
     {
         $data  = $request->getContent();
+
         $genre = $serializer->deserialize(
             $data,
             Genre::class,
@@ -70,24 +72,22 @@ class ApiGenreController extends AbstractController
     }
 
     /**
-     * @Route("/api/genres", name="api_genre_update", methods={"PUT"})
+     * @Route("/api/genres/{id}", name="api_genre_update", methods={"PUT"})
      */
-    public function update(Request $request, SerializerInterface $serializer, EntityManagerInterface $em): Response
+    public function update(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, Genre $genre): Response
     {
-        $data  = $request->getContent();
-        $genre = $serializer->deserialize(
+        $data = $request->getContent();
+
+        $serializer->deserialize(
             $data,
             Genre::class,
-            'json'      
+            'json',
+            ['object_to_populate'=> $genre]
         );
-        
+
         $em->persist($genre);
         $em->flush();
 
-        return new JsonResponse(
-            "Le genre as bien été ajouter", 
-            Response::HTTP_CREATED,
-            ['location' => $this->generateUrl("api_genre_show", ['id' => $genre->getId(), UrlGeneratorInterface::ABSOLUTE_URL])],
-            true);
+        return new JsonResponse("Le genre a bien été modifier", Response::HTTP_OK, [], true);
     }
 }
