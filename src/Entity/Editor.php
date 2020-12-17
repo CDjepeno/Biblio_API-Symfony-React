@@ -39,6 +39,11 @@ class Editor
         return $this->id;
     }
 
+    public function __toString()
+    {
+        return $this->firstname;
+    }
+
     public function getFirstname(): ?string
     {
         return $this->firstname;

@@ -1,0 +1,7 @@
+easy_admin:
+  entities:
+    - App\Entity\Genre
+    - App\Entity\Nationality
+    - App\Entity\Author
+    - App\Entity\Editor
+    - App\Entity\book

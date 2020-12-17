@@ -49,6 +49,11 @@ class Author
         return $this->id;
     }
 
+    public function __toString()
+    {
+        return $this->firstname.' '.$this->lastname;
+    }
+
     public function getFirstname(): ?string
     {
         return $this->firstname;
