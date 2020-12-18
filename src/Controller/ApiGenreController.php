@@ -28,14 +28,14 @@ class ApiGenreController extends AbstractController
             $genres,
             'json',
             [
-                'groups' => ['list_genre']
+                'groups' => ['listGenreFull']
             ]
         );
         return new JsonResponse($result, 200, [], true);
     }
 
     /**
-     * @Route("/api/genre/{id}", name="api_genre_show", methods={"GET"})
+     * @Route("/api/genres/{id}", name="api_genre_show", methods={"GET"})
      */
     public function show(Genre $genre, SerializerInterface $serializer): Response
     {   
@@ -43,7 +43,7 @@ class ApiGenreController extends AbstractController
             $genre,
             'json',
             [
-                'groups'=>['list_genre_show']
+                'groups'=>['listGenreShow']
             ]
         );
         return new JsonResponse($result, Response::HTTP_OK, [], true);
@@ -52,7 +52,8 @@ class ApiGenreController extends AbstractController
     /**
      * @Route("/api/genres", name="api_genre_create", methods={"POST"})
      */
-    public function create(SerializerInterface $serializer, EntityManagerInterface $em, Request $request, ValidatorInterface $validator): Response
+    public function create(SerializerInterface $serializer, EntityManagerInterface $em, 
+                            Request $request, ValidatorInterface $validator): Response
     {
         $data  = $request->getContent();
 
@@ -81,7 +82,8 @@ class ApiGenreController extends AbstractController
     /**
      * @Route("/api/genres/{id}", name="api_genre_update", methods={"PUT"})
      */
-    public function update(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, Genre $genre, ValidatorInterface $validator): Response
+    public function update(Request $request, SerializerInterface $serializer, EntityManagerInterface $em,
+                             Genre $genre, ValidatorInterface $validator): Response
     {
         $data = $request->getContent();
 

@@ -25,7 +25,7 @@ class Genre
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"list_genre", "list_genre_show"})
+     * @Groups({"listGenreFull", "listGenreShow"})
      * @Assert\Length(
      *      min=2,
      *      max=50,
