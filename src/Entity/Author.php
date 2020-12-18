@@ -50,15 +50,16 @@ class Author
         $this->books = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->firstname.' '.$this->lastname;
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function __toString()
-    {
-        return $this->firstname.' '.$this->lastname;
-    }
 
     public function getFirstname(): ?string
     {

@@ -66,6 +66,8 @@ class ApiAuthorController extends AbstractController
             'json',
             ['object_to_populate'=> $author]      
         );
+
+        $author->setNationality($nationality);
         
         $error = $validator->validate($author);
         if(count($error)){
