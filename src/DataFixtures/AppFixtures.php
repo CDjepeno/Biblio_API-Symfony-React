@@ -35,21 +35,19 @@ class AppFixtures extends Fixture
 
             $nationality->setTitle($nat);
             $manager->persist($nationality);
-            
-             // Ont gère les auteurs
-             $authors = [];
-             for($a=0; $a<=mt_rand(2,3); $a++){
-                $author = new Author;
-                $author->setFirstname($faker->firstname())
-                        ->setLastname($faker->lastname())
-                        ->setNationality($nationality);
-                        
-                $manager->persist($author);
-                $authors[]= $author;
-            }
-            dd(count($authors));
-
            
+            $Nationalities[]=$nationality;
+        }
+         // Ont gère les auteurs
+         $authors = [];
+         for($a=0; $a<=10; $a++){
+            $author = new Author;
+            $author->setFirstname($faker->firstname())
+                    ->setLastname($faker->lastname())
+                    ->setNationality($faker->randomElement($Nationalities));
+                    
+            $manager->persist($author);
+            $authors[]= $author;
         }
          // Ont gère les genres
          $genres = ['Litterature','Terreur','Science','BD','Policier'];
@@ -64,7 +62,7 @@ class AppFixtures extends Fixture
                  $book = new Book;
                  $editor = $editors[mt_rand(0,count($editors) -1)];
                  $author = $authors[mt_rand(0,count($authors) -1)];
-                 $book->setTitle('book'.$b)
+                 $book->setTitle($faker->name())
                      ->setPrice(mt_rand(3, 7))
                      ->setIsbn(45)
                      ->setYear(mt_rand(1990,1995))

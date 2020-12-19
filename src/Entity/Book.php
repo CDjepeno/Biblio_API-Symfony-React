@@ -2,14 +2,32 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BookRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *      attributes={
+ *          "order"={
+ *              "title":"ASC",
+ *              "price":"DESC"
+ *          }
+ *      }
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"title": "ipartial", "author": "exact"})
+ * @ApiFilter(RangeFilter::class, properties={"price"})
+ * @ApiFilter(OrderFilter::class, properties={"title","price","author.firstname"})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName":"properties","overrideDefaultProperties":"false","whitelist"={"isbn","title"}})
  */
 class Book
 {
@@ -66,6 +84,16 @@ class Book
      * @ORM\Column(type="string", length=255)
      */
     private $langue;
+
+    /**
+     * @ORM\OneToMany(targetEntity=BookRent::class, mappedBy="book")
+     */
+    private $bookRents;
+
+    public function __construct()
+    {
+        $this->bookRents = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -164,6 +192,36 @@ class Book
     public function setLangue(string $langue): self
     {
         $this->langue = $langue;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BookRent[]
+     */
+    public function getBookRents(): Collection
+    {
+        return $this->bookRents;
+    }
+
+    public function addBookRent(BookRent $bookRent): self
+    {
+        if (!$this->bookRents->contains($bookRent)) {
+            $this->bookRents[] = $bookRent;
+            $bookRent->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookRent(BookRent $bookRent): self
+    {
+        if ($this->bookRents->removeElement($bookRent)) {
+            // set the owning side to null (unless already changed)
+            if ($bookRent->getBook() === $this) {
+                $bookRent->setBook(null);
+            }
+        }
 
         return $this;
     }
