@@ -5,11 +5,13 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\EditorRepository;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=EditorRepository::class)
+ * @ApiResource()
  */
 class Editor
 {
@@ -22,7 +24,6 @@ class Editor
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"listAuthorFull"})
      */
     private $firstname;
 

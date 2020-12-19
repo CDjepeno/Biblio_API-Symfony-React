@@ -5,13 +5,16 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\GenreRepository;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=GenreRepository::class)
+ * @ApiResource()
  * @UniqueEntity("title", message="Un genre possède déjà ce nom")
  */
 class Genre
@@ -25,7 +28,6 @@ class Genre
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"listGenreFull", "listGenreShow"})
      * @Assert\Length(
      *      min=2,
      *      max=50,
@@ -37,6 +39,7 @@ class Genre
 
     /**
      * @ORM\OneToMany(targetEntity=Book::class, mappedBy="genre")
+     * @ApiSubresource
      * 
      */
     private $books;

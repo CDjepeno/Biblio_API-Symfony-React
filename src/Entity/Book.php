@@ -4,10 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BookRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
+ * @ApiResource()
  */
 class Book
 {
@@ -15,26 +17,22 @@ class Book
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"listAuthorFull"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"listAuthorFull"})
      */
     private $isbn;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"listAuthorFull"})
      * 
      */
     private $title;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({"listAuthorFull"})
      * 
      */
     private $price;
@@ -42,14 +40,12 @@ class Book
     /**
      * @ORM\ManyToOne(targetEntity=Genre::class, inversedBy="books")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"listAuthorFull"})
      */
     private $genre;
 
     /**
      * @ORM\ManyToOne(targetEntity=Editor::class, inversedBy="books")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"listAuthorFull"})
      */
     private $editor;
 
@@ -62,14 +58,12 @@ class Book
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"listAuthorFull"})
      * 
      */
     private $year;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"listAuthorFull"})
      */
     private $langue;
 
