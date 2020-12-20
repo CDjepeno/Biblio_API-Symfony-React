@@ -2,17 +2,27 @@
 
 namespace App\DataFixtures;
 
+use DateTime;
 use Faker\Factory;
-use App\Entity\Author;
 use App\Entity\Book;
-use App\Entity\Editor;
 use App\Entity\Genre;
+use App\Entity\Author;
+use App\Entity\Editor;
+use App\Entity\Member;
+use App\Entity\BookRent;
 use App\Entity\Nationality;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
+    protected $encoder;
+
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
+        $this->encoder = $encoder;
+    }
     public function load(ObjectManager $manager)
     {
         $faker     = Factory::create('FR-fr');
@@ -70,12 +80,62 @@ class AppFixtures extends Fixture
                      ->setAuthor($author)
                      ->setEditor($editor)
                      ->setGenre($genre);
-
+                $books[]=$book;
                 $manager->persist($book);
              }
          }
 
+        //  Ont gère les membres
+        for($m=0; $m<25; $m++){
+            $member  = new Member();
+            $commune = ["78003", "78005", "78006", "78007", "78009", "78010", "78013", "78015", "78020", "78029",
+            "78030", "78031", "78033", "78034", "78036", "78043", "78048", "78049", "78050", "78053", "78057",
+            "78062", "78068", "78070", "78071", "78072", "78073", "78076", "78077", "78082", "78084", "78087",
+            "78089", "78090", "78092", "78096", "78104", "78107", "78108", "78113", "78117", "78118"];
+            $hash    = $this->encoder->encodePassword($member, 'password');
+            $member->setFirstname($faker->firstname())
+                   ->setLastname($faker->lastname())
+                   ->setAddress($faker->streetaddress())
+                   ->setCommuneCode($commune[mt_rand(0,sizeof($commune)-1)])
+                   ->setMail(strtolower($member->getFirstname()."@mail.com"))
+                   ->setPhone($faker->phoneNumber())
+                   ->setPassword($hash);
 
+            $members[] = $member;
+            $manager->persist($member);
+        }
+        $member = new member();
+        $member->setFirstname("chris")
+                ->setLastname("djepeno")
+                ->setMail("admin@gmail.com")
+                ->setPassword("admin");
+        $manager->persist($member);
+
+         //  Ont gère les locations de livre
+         for($i=0; $i<25; $i++){
+             $max = mt_rand(1,5);
+             for($r=0;$r<=$max;$r++){
+                $bookrent    = $faker->randomElement($books);
+                $memberrent  = $faker->randomElement($members);
+                $rent        = new BookRent();
+                $dateRent    = $faker->dateTimeBetween('-6 months');
+                $duration1   = mt_rand(15, 19);
+                $duration2   = mt_rand(20, 25);
+
+                // Ont clone la dateRent pour ne pas modifier la startDate.
+                $dateReturn  = (clone $dateRent)->modify("+$duration1 days");
+                $dateRealReturn  = (clone $dateRent)->modify("+$duration2 days");
+
+                $rent->setBook($bookrent)
+                     ->setMember($memberrent)
+                     ->setDateRent($dateRent)
+                     ->setDateReturn($dateReturn);
+                     if(mt_rand(1,3)==1){
+                         $rent->setDateRealReturn($dateRealReturn);
+                     }      
+                $manager->persist($rent);
+            }
+        }
         $manager->flush();
     }
 }

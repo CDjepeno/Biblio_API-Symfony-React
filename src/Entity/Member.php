@@ -2,17 +2,18 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MemberRepository;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=MemberRepository::class)
  * @ApiResource()
  */
-class Member
+class Member implements UserInterface
 {
     /**
      * @ORM\Id
@@ -184,4 +185,21 @@ class Member
 
         return $this;
     }
+
+    public function getRoles()
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function getSalt(){}
+
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    public function eraseCredentials(){}
+
+
+
 }
