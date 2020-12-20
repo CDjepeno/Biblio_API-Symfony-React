@@ -8,10 +8,13 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=MemberRepository::class)
  * @ApiResource()
+ * @UniqueEntity("mail", message="Il existe déja ce mail {{ value }} veuillez saisir un autre mail")
+ * 
  */
 class Member implements UserInterface
 {
@@ -195,7 +198,7 @@ class Member implements UserInterface
 
     public function getUsername()
     {
-        return $this->email;
+        return $this->mail;
     }
 
     public function eraseCredentials(){}

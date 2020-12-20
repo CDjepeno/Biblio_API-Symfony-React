@@ -108,7 +108,7 @@ class AppFixtures extends Fixture
         $member->setFirstname("chris")
                 ->setLastname("djepeno")
                 ->setMail("admin@gmail.com")
-                ->setPassword("admin");
+                ->setPassword($this->encoder->encodePassword($member, "admin"));
         $manager->persist($member);
 
          //  Ont gère les locations de livre
