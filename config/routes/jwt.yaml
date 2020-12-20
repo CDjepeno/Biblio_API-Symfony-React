@@ -1,0 +1,3 @@
+apiPlatform_login_check:
+  path: /apiPlatform/login_check
+  methods: ['POST']

@@ -18,7 +18,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Member implements UserInterface
 {
+    const ROLE_ADMIN = "ROLE_ADMIN";
+    const ROLE_MANAGER = "ROLE_MANAGER";
+    const ROLE_MEMBER = "ROLE_MEMBER";
+    const ROLE_DEFAULT = "ROLE_MEMBER";
+
     /**
+     * 
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -61,13 +67,22 @@ class Member implements UserInterface
     private $password;
 
     /**
+     * @ORM\Column(type="array", length=255, nullable=true)
+     */
+    private $roles;
+
+    /**
      * @ORM\OneToMany(targetEntity=BookRent::class, mappedBy="member")
      */
     private $bookRents;
 
+    
+
     public function __construct()
     {
         $this->bookRents = new ArrayCollection();
+        $thisRole[]      = [self::ROLE_DEFAULT];
+        $this->roles     = $thisRole;
     }
 
     public function getId(): ?int
@@ -189,11 +204,22 @@ class Member implements UserInterface
         return $this;
     }
 
-    public function getRoles()
+    public function getRoles() : array
     {
-        return ['ROLE_USER'];
+        return [$this->roles];
     }
-
+    
+    /**
+     * Affecte les roles à un utilisateur
+     *
+     * @param array $roles
+     * @return self
+     */
+    public function setRoles(array $roles) : self
+    {
+        $this->roles=$roles;
+        return $this;
+    }
     public function getSalt(){}
 
     public function getUsername()

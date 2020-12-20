@@ -16,12 +16,12 @@ security:
             pattern: ^/apiPlatform
             stateless: true
             anonymous: true
-
+             
             json_login:
+                username_path: mail
                 check_path: /apiPlatform/login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-            
             guard:
                 authenticators: 
                 - lexik_jwt_authentication.jwt_token_authenticator
@@ -34,5 +34,5 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/apiPlatform/login, roles: ROLE_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/apiPlatform/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/apiPlatform, roles: IS_AUTHENTICATED_FULLY }

@@ -104,11 +104,22 @@ class AppFixtures extends Fixture
             $members[] = $member;
             $manager->persist($member);
         }
+        $roleAdmin[]   = MEMBER::ROLE_ADMIN;
+        $roleManager[] = MEMBER::ROLE_MANAGER;
         $member = new member();
         $member->setFirstname("chris")
                 ->setLastname("djepeno")
                 ->setMail("admin@gmail.com")
-                ->setPassword($this->encoder->encodePassword($member, "admin"));
+                ->setPassword($this->encoder->encodePassword($member, "admin"))
+                ->setRoles($roleAdmin);
+        $manager->persist($member);
+
+        $member = new member();
+        $member->setFirstname("sonia")
+                ->setLastname("djepeno")
+                ->setMail("manager@gmail.com")
+                ->setPassword($this->encoder->encodePassword($member, "manager"))
+                ->setRoles($roleManager);
         $manager->persist($member);
 
          //  Ont gère les locations de livre
