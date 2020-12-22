@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Role;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MemberRepository;
 use Doctrine\Common\Collections\Collection;
@@ -18,11 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Member implements UserInterface
 {
-    const ROLE_ADMIN = "ROLE_ADMIN";
-    const ROLE_MANAGER = "ROLE_MANAGER";
-    const ROLE_MEMBER = "ROLE_MEMBER";
-    const ROLE_DEFAULT = "ROLE_MEMBER";
-
+    
     /**
      * 
      * @ORM\Id
@@ -67,22 +64,19 @@ class Member implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="array", length=255, nullable=true)
-     */
-    private $roles;
-
-    /**
      * @ORM\OneToMany(targetEntity=BookRent::class, mappedBy="member")
      */
     private $bookRents;
 
-    
+    /**
+     * @ORM\ManyToMany(targetEntity=Role::class, mappedBy="members")
+     */
+    private $roles;   
 
     public function __construct()
     {
         $this->bookRents = new ArrayCollection();
-        $thisRole[]      = [self::ROLE_DEFAULT];
-        $this->roles     = $thisRole;
+        $this->roles     = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -204,22 +198,16 @@ class Member implements UserInterface
         return $this;
     }
 
-    public function getRoles() : array
+    public function getRoles()
     {
-        return [$this->roles];
+        $roles = $this->roles->map(function($role){
+            return $role->getTitle();
+        })->toArray();
+        $roles[] = "ROLE_USER";
+        // dd($roles);
+        return $roles;
     }
-    
-    /**
-     * Affecte les roles à un utilisateur
-     *
-     * @param array $roles
-     * @return self
-     */
-    public function setRoles(array $roles) : self
-    {
-        $this->roles=$roles;
-        return $this;
-    }
+   
     public function getSalt(){}
 
     public function getUsername()
@@ -229,6 +217,26 @@ class Member implements UserInterface
 
     public function eraseCredentials(){}
 
+    public function addRole(Role $role): self
+    {
+        if (!$this->roles->contains($role)) {
+            $this->roles[] = $role;
+            $role->getMembers($this);
+        }
 
+        return $this;
+    }
+
+    public function removeRole(Role $role): self
+    {
+        if ($this->roles->removeElement($role)) {
+            // set the owning side to null (unless already changed)
+            if ($role->getMembers() === $this) {
+                $role->getMembers(null);
+            }
+        }
+
+        return $this;
+    }
 
 }

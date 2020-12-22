@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use DateTime;
 use Faker\Factory;
 use App\Entity\Book;
+use App\Entity\Role;
 use App\Entity\Genre;
 use App\Entity\Author;
 use App\Entity\Editor;
@@ -104,22 +105,30 @@ class AppFixtures extends Fixture
             $members[] = $member;
             $manager->persist($member);
         }
-        $roleAdmin[]   = MEMBER::ROLE_ADMIN;
-        $roleManager[] = MEMBER::ROLE_MANAGER;
+        // Ont gère les roles
+        $adminRole = new Role();
+        $adminRole->setTitle("ROLE_ADMIN");
+        $manager->persist($adminRole);
+
         $member = new member();
         $member->setFirstname("chris")
-                ->setLastname("djepeno")
-                ->setMail("admin@gmail.com")
-                ->setPassword($this->encoder->encodePassword($member, "admin"))
-                ->setRoles($roleAdmin);
+        ->setLastname("djepeno")
+        ->setMail("admin@gmail.com")
+        ->setPassword($this->encoder->encodePassword($member, "admin"))
+        ->addRole($adminRole);
+        //  dd($member->getRoles());
         $manager->persist($member);
+        
+        $managerRole = new Role();
+        $managerRole->setTitle("ROLE_MANAGER");
+        $manager->persist($managerRole);
 
         $member = new member();
         $member->setFirstname("sonia")
                 ->setLastname("djepeno")
                 ->setMail("manager@gmail.com")
                 ->setPassword($this->encoder->encodePassword($member, "manager"))
-                ->setRoles($roleManager);
+                ->addRole($managerRole);
         $manager->persist($member);
 
          //  Ont gère les locations de livre

@@ -22,10 +22,47 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              "title":"ASC",
  *              "price":"DESC"
  *          }
+ *       },
+ *       collectionOperations={
+ *           "get"={
+ *              "method" = "GET",
+ *              "path" = "/books",
+ *              "normalization_context" = {
+ *                  "groups" = {"get_role_member"},
+ *               }
+ *           },
+ *           "post"={
+ *              "method" = "POST",
+ *              "security"="is_granted('ROLE_MANAGER')",
+ *              "securiy_message"="Vous n'avez pas les droits d'acceder à cette ressource"
+ *           }
+ *      },
+ *      itemOperation={
+ *          "get"={
+ *              "method" = "GET",
+ *              "path" = "/book/{id}",
+ *              "normalizationContext" = {
+ *                  "groups" = {"get_role_member"}
+ *               }
+ *           },
+ *            "put"={
+ *              "method" = "PUT",
+ *              "path" = "/book/{id}",
+ *              "security"="is_granted('ROLE_MANAGER')",
+ *              "security_message"="Vous n'avez pas les droits d'acceder à cette ressource",
+ *              "denormalizationContext" = {
+ *                  "groups"={"putManager"}
+ *               }
+ *           },
+ *            "delete_admin"={
+ *              "method" = "DELETE",
+ *              "path" = "/book/{id}",
+ *              "security"="is_granted('ROLE_ADMIN')",
+ *              "security_message"="Vous n'avez pas les droits d'acceder à cette ressource"
+ *           }
  *      }
  * )
- * @ApiFilter(SearchFilter::class, properties={"title": "ipartial", "author": "exact"})
- * @ApiFilter(RangeFilter::class, properties={"price"})
+ * @ApiFilter(SearchFilter::class, properties={"title": "ipartial", "author": "exact", "genre": "exact"})
  * @ApiFilter(OrderFilter::class, properties={"title","price","author.firstname"})
  * @ApiFilter(PropertyFilter::class, arguments={"parameterName":"properties","overrideDefaultProperties":"false","whitelist"={"isbn","title"}})
  */
@@ -40,17 +77,20 @@ class Book
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get_role_member","putManager"})
      */
     private $isbn;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get_role_member","putManager"})
      * 
      */
     private $title;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"get_role_manager", "put_admin"})
      * 
      */
     private $price;
@@ -58,35 +98,41 @@ class Book
     /**
      * @ORM\ManyToOne(targetEntity=Genre::class, inversedBy="books")
      * @ORM\JoinColumn(nullable=false)
+     * 
      */
     private $genre;
 
     /**
      * @ORM\ManyToOne(targetEntity=Editor::class, inversedBy="books")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"get_role_member","putManager"})
      */
     private $editor;
 
     /**
      * @ORM\ManyToOne(targetEntity=Author::class, inversedBy="books")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"get_role_member","putManager"})
      * 
      */
     private $author;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"get_role_member","putManager"})
      * 
      */
     private $year;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get_role_member","putManager"})
      */
     private $langue;
 
     /**
      * @ORM\OneToMany(targetEntity=BookRent::class, mappedBy="book")
+     * @Groups({"get_role_manager"})
      */
     private $bookRents;
 
