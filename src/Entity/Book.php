@@ -37,7 +37,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              "securiy_message"="Vous n'avez pas les droits d'acceder à cette ressource"
  *           }
  *      },
- *      itemOperation={
+ *      itemOperations={
  *          "get"={
  *              "method" = "GET",
  *              "path" = "/book/{id}",

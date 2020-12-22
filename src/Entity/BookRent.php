@@ -2,13 +2,54 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BookRentRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=BookRentRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *  collectionOperations={
+ *       "get"={
+ *          "method" = "GET",
+ *           "path" = "/books",
+ *           "normalization_context" = {
+ *           "groups" = {"get_role_member"},
+ *           }
+ *        },
+ *       "post"={
+ *           "method" = "POST",
+ *           
+ *        }
+ *   },
+ *   itemOperations={
+ *       "get"={
+ *           "method"="GET",
+ *           "path"="/bookrent/{id}",
+ *               "normalizationContext" = {
+ *                   "groups" = {"get_role_member"}
+ *               }
+ *           },
+ *           "put"={
+ *               "method" = "PUT",
+ *               "path" = "/book/{id}",
+ *               "security"="is_granted('ROLE_MANAGER')",
+ *               "security_message"="Vous n'avez pas les droits d'acceder à cette ressource",
+ *               "denormalizationContext" = {
+ *                   "groups"={"putManager"}
+ *               }
+ *           },
+ *           "delete_admin"={
+ *               "method" = "DELETE",
+ *               "path" = "/book/{id}",
+ *               "security"="is_granted('ROLE_ADMIN')",
+ *               "security_message"="Vous n'avez pas les droits d'acceder à cette ressource"
+ *           }  
+ *       }
+ *)
  */
 class BookRent
 {
@@ -21,29 +62,42 @@ class BookRent
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"get_role_manager"})
      */
     private $dateRent;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"get_role_manager"})
      */
     private $dateReturn;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"putManager","get_role_manager"})
      */
     private $dateRealReturn;
 
     /**
      * @ORM\ManyToOne(targetEntity=Book::class, inversedBy="bookRents")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"get_role_member","get_role_manager","put_admin"})
      */
     private $book;
 
     /**
      * @ORM\ManyToOne(targetEntity=Member::class, inversedBy="bookRents")
+     * @Groups({"get_role_manager"})
      */
     private $member;
+
+    public function __construct()
+    {
+        $this->dateRent       = new \DateTime();
+        $dateReturn           = date('Y-m-d' , strtotime('15 days', $this->getDateRent()->getTimestamp()));
+        $this->dateReturn     = \DateTime::createFromFormat('Y-m-d', $dateReturn); 
+        $this->dateRealReturn = null;
+    }
 
     public function getId(): ?int
     {

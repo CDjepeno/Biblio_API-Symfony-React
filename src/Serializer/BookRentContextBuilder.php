@@ -5,9 +5,9 @@ namespace App\Serializer;
 use ApiPlatform\Core\Serializer\SerializerContextBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use App\Entity\Book;
+use App\Entity\BookRent;
 
-final class BookContextBuilder implements SerializerContextBuilderInterface
+final class BookRentContextBuilder implements SerializerContextBuilderInterface
 {
     private $decorated;
     private $authorizationChecker;
@@ -23,10 +23,10 @@ final class BookContextBuilder implements SerializerContextBuilderInterface
         $context       = $this->decorated->createFromRequest($request, $normalization, $extractedAttributes);
         $resourceClass = $context['resource_class'] ?? null;
 
-        if ($resourceClass === Book::class && isset($context['groups']) && $this->authorizationChecker->isGranted('ROLE_MANAGER') &&  $normalization === true) {
+        if ($resourceClass === BookRent::class && isset($context['groups']) && $this->authorizationChecker->isGranted('ROLE_MANAGER') &&  $normalization === true) {
             $context['groups'][] = 'get_role_manager';
         }
-        if ($resourceClass === Book::class && isset($context['groups']) && $this->authorizationChecker->isGranted('ROLE_ADMIN') &&  $normalization === false) {
+        if ($resourceClass === BookRent::class && isset($context['groups']) && $this->authorizationChecker->isGranted('ROLE_ADMIN') &&  $normalization === false) {
             if($request->getMethod()=="PUT"){
                 $context['groups'][] = 'put_admin';
             }

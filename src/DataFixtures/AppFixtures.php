@@ -118,7 +118,7 @@ class AppFixtures extends Fixture
         ->addRole($adminRole);
         //  dd($member->getRoles());
         $manager->persist($member);
-        
+
         $managerRole = new Role();
         $managerRole->setTitle("ROLE_MANAGER");
         $manager->persist($managerRole);
@@ -139,11 +139,11 @@ class AppFixtures extends Fixture
                 $memberrent  = $faker->randomElement($members);
                 $rent        = new BookRent();
                 $dateRent    = $faker->dateTimeBetween('-6 months');
-                $duration1   = mt_rand(15, 19);
+                $duration1   = 15;
                 $duration2   = mt_rand(20, 25);
 
                 // Ont clone la dateRent pour ne pas modifier la startDate.
-                $dateReturn  = (clone $dateRent)->modify("+$duration1 days");
+                $dateReturn      = (clone $dateRent)->modify("+$duration1 days");
                 $dateRealReturn  = (clone $dateRent)->modify("+$duration2 days");
 
                 $rent->setBook($bookrent)
