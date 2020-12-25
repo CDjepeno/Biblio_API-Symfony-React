@@ -12,7 +12,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AuthorRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *      collectionOperations={
+ *          "get"={
+ *              "method"="GET",
+ *              "path" = "/authors",
+ *              "normalization_context"={
+ *                  "groups" = {"get"}
+ *              }
+ *          }
+ *      }
+ * )
  */
 class Author
 {
@@ -25,11 +35,13 @@ class Author
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get"})
      */
     private $lastname;
 
@@ -124,5 +136,31 @@ class Author
         }
 
         return $this;
+    }
+
+    /**
+     * Permet de compter le nombre de livres de chaque auteur
+     *
+     * @Groups({"get"})
+     * 
+     * @return integer
+     */
+    public function getNbBooks(): int
+    {
+        return $this->books->count();
+    }
+
+    /**
+     * Retourne le nombre de livre disponible de cette autheur
+     * 
+     * @Groups({"get"})
+     *
+     * @return integer
+     */
+    public function getNbBookAvailable():int
+    {
+        return array_reduce($this->books->toArray(), function($nb, $book){
+            return $nb + ($book->getBookRents() === true ? 1 : 0);
+        }, 0);
     }
 }

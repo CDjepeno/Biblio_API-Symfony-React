@@ -33,9 +33,18 @@ class RentSubscriber implements EventSubscriberInterface
         $method = $event->getRequest()->getMethod(); // récupère la méthode invoquée dans la request
         $member = $this->token->getToken()->getUser(); // récupère le membre actuellement connecté
         
-        if($entity instanceof BookRent && $method == Request::METHOD_POST){ 
-            $entity->setMember($member); // on écrit le membre dans la propriété member de l'entity BookRent
-            // dd($entity->getMember());
+        if ($entity instanceof BookRent) {
+            if ($method == Request::METHOD_POST) {
+                $entity->setMember($member); // on écrit le membre dans la propriété member de l'entity BookRent
+            } elseif ($method == Request::METHOD_PUT) {
+                if ($entity->getDateRealReturn() == null) {
+                    $entity->getBook()->setAvailable(false);
+                } else {
+                    $entity->getBook()->setAvailable(true);
+                }
+            } elseif ($method == Request::METHOD_PUT) {
+                $entity->getBook()->setAvailable(true);
+            }
         }
         return;
     }

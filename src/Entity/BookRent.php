@@ -6,6 +6,7 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BookRentRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -15,27 +16,30 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *  collectionOperations={
  *       "get"={
  *          "method" = "GET",
- *           "path" = "/books",
+ *           "path" = "/booksrent",
+ *           "security"="is_granted('ROLE_MANAGER')",
+ *           "security_message"="Vous ne pouvez avoir accès a tous les pret.",           
  *           "normalization_context" = {
- *           "groups" = {"get_role_member"},
+ *              "groups" = {"get_role_member"},
  *           }
  *        },
  *       "post"={
- *           "method" = "POST",
- *           
+ *           "method" = "POST",  
  *        }
  *   },
  *   itemOperations={
  *       "get"={
  *           "method"="GET",
  *           "path"="/bookrent/{id}",
+ *              "security"="is_granted('ROLE_USER') and object.getMember() == user or is_granted('ROLE_MANAGER')",
+ *              "security_message"="Vous ne pouvez avoir accès qu'a vos propres prêts.",
  *               "normalizationContext" = {
  *                   "groups" = {"get_role_member"}
  *               }
  *           },
  *           "put"={
  *               "method" = "PUT",
- *               "path" = "/book/{id}",
+ *               "path" = "/bookrent/{id}",
  *               "security"="is_granted('ROLE_MANAGER')",
  *               "security_message"="Vous n'avez pas les droits d'acceder à cette ressource",
  *               "denormalizationContext" = {
@@ -44,12 +48,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *           },
  *           "delete_admin"={
  *               "method" = "DELETE",
- *               "path" = "/book/{id}",
+ *               "path" = "/bookrent/{id}",
  *               "security"="is_granted('ROLE_ADMIN')",
  *               "security_message"="Vous n'avez pas les droits d'acceder à cette ressource"
  *           }  
  *       }
- *)
+ * )
+ * @ORM\HasLifecycleCallbacks()
  */
 class BookRent
 {
@@ -68,7 +73,7 @@ class BookRent
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"get_role_manager"})
+     * @Groups({"get_role_manager","put_manager"})
      */
     private $dateReturn;
 
@@ -163,4 +168,6 @@ class BookRent
 
         return $this;
     }
+
+    
 }
