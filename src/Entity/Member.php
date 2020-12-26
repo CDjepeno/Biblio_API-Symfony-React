@@ -17,22 +17,27 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass=MemberRepository::class)
  * @ApiResource(
  *      collectionOperations={
- *       "get"={
- *          "method" = "GET",
- *           "path" = "/members",
- *           "security"="is_granted('ROLE_MANAGER')",
- *           "security_message"="Vous ne pouvez avoir accès a tous les membres.",           
- *        },
- *       "post"={
- *           "method" = "POST",
- *           "security"="is_granted('ROLE_MANAGER')",
- *           "security_message"="Vous ne pouvez avoir accès a tous les membres.", 
- *           "normalization_context" = {
- *              "groups" = {"post_manager"},
- *           } 
- *        }
- *   },
- * itemOperations={
+ *          "get"={
+ *              "method" = "GET",
+ *              "path" = "/members",
+ *              "security"="is_granted('ROLE_MANAGER')",
+ *              "security_message"="Vous ne pouvez avoir accès a tous les membres.",           
+ *          },
+ *          "post"={
+ *              "method" = "POST",
+ *              "security"="is_granted('ROLE_MANAGER')",
+ *              "security_message"="Vous ne pouvez avoir accès a tous les membres.", 
+ *              "normalization_context" = {
+ *                  "groups" = {"post_manager"},
+ *              }
+ *          },
+ *          "statNbRentPerMember"={
+ *              "method"="GET",
+ *              "route_name"="member_nbRent",
+ *              "controller"="StatsController::class",
+ *           }  
+ *     },
+ *   itemOperations={
  *       "get"={
  *           "method"="GET",
  *           "path"="/member/{id}",
@@ -41,23 +46,27 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *               "normalizationContext" = {
  *                   "groups" = {"get_role_member"}
  *               }
- *           },
- *           "put"={
- *               "method" = "PUT",
- *               "path" = "/bookrent/{id}",
- *               "security"="is_granted('ROLE_USER') and object.getMember() == user or is_granted('ROLE_MANAGER')",
- *              "security_message"="Vous ne pouvez avoir accès qu'a vos propres prêts.",
- *               "denormalizationContext" = {
- *                   "groups"={"put_member"}
- *               }
- *           },
- *           "delete_admin"={
- *               "method" = "DELETE",
- *               "path" = "/bookrent/{id}",
- *               "security"="is_granted('ROLE_ADMIN')",
- *               "security_message"="Vous n'avez pas les droits d'acceder à cette ressource"
- *           }  
- *       }
+ *        },
+ *         "getNbRents"={
+ *              "method"="GET",
+ *              "route_name"="member_rent_count",
+ *        },
+ *        "put"={
+ *            "method" = "PUT",
+ *            "path" = "/bookrent/{id}",
+ *            "security"="is_granted('ROLE_USER') and object.getMember() == user or is_granted('ROLE_MANAGER')",
+ *            "security_message"="Vous ne pouvez avoir accès qu'a vos propres prêts.",
+ *            "denormalizationContext" = {
+ *                 "groups"={"put_member"}
+ *             }
+ *         },
+ *         "delete_admin"={
+ *            "method" = "DELETE",
+ *            "path" = "/bookrent/{id}",
+ *            "security"="is_granted('ROLE_ADMIN')",
+ *            "security_message"="Vous n'avez pas les droits d'acceder à cette ressource"
+ *          }  
+ *     }
  * )
  * @UniqueEntity("mail", message="Il existe déja ce mail {{ value }} veuillez saisir un autre mail")
  * 

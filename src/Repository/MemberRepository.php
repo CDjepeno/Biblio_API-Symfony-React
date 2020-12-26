@@ -19,6 +19,17 @@ class MemberRepository extends ServiceEntityRepository
         parent::__construct($registry, Member::class);
     }
 
+    public function getNbRentPerMember()
+    {
+        return $this->createQueryBuilder("m")
+                ->select("m.id,m.firstname,m.lastname,count(r.id) as nbRents")
+                ->join("m.bookRents", "r")
+                ->groupBy("m")
+                ->orderBy("nbRents","DESC")
+                ->getQuery()
+                ->getResult();
+    }
+
     // /**
     //  * @return Member[] Returns an array of Member objects
     //  */

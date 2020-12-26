@@ -19,6 +19,24 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
+    /**
+     * Permet de récupérer les 5 meilleurs livres
+     *
+     * @return void
+     */
+    public function getBest5Book()
+    {
+        return $this->createQueryBuilder("b")
+             ->join("b.bookRents","bk")
+             ->select("b as book, count(bk.id) as nbRent")
+             ->groupBy("b")
+             ->orderBy("nbRent", "DESC")
+             ->setMaxResults(5)
+             ->getQuery()
+             ->getResult();
+    }
+
+
     // /**
     //  * @return Book[] Returns an array of Book objects
     //  */

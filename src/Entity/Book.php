@@ -31,6 +31,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *                  "groups" = {"get_role_member"},
  *               }
  *           },
+ *           "bestBook"={
+ *              "method"="GET",
+ *              "route_name"="best_book",
+ *              "controller"="statsController::class"
+ *           },
  *           "post"={
  *              "method" = "POST",
  *              "security"="is_granted('ROLE_MANAGER')",

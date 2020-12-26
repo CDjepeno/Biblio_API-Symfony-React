@@ -52,7 +52,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *               "security"="is_granted('ROLE_ADMIN')",
  *               "security_message"="Vous n'avez pas les droits d'acceder à cette ressource"
  *           }  
- *       }
+ *    }
  * )
  * @ORM\HasLifecycleCallbacks()
  */
