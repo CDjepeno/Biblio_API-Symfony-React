@@ -26,10 +26,13 @@ final class MemberRentContextBuilder implements SerializerContextBuilderInterfac
         if ($resourceClass === Member::class && isset($context['groups']) && $this->authorizationChecker->isGranted('ROLE_MANAGER') &&  $normalization === true) {
             $context['groups'][] = 'get_role_manager';
         }
-        if ($resourceClass === Member::class && isset($context['groups']) && $this->authorizationChecker->isGranted('ROLE_ADMIN') &&  $normalization === false) {
-            if($request->getMethod()=="PUT"){
-                $context['groups'][] = 'put_manager';
+        if ($resourceClass === Member::class && isset($context['groups'])) {
+            if($request->getMethod() == "POST"){
+                $context['groups'][] = 'post_admin';
+            } elseif($request->getMethod()=="PUT"){
+                $context['groups'][] = 'put_admin';
             }
+           
         }
         return $context;
     }

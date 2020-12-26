@@ -13,18 +13,24 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=BookRentRepository::class)
  * @ApiResource(
+ *  attributes={
+ *      "order"={
+ *          "dateRent":"ASC"
+ *      }
+ *  },
  *  collectionOperations={
  *       "get"={
  *          "method" = "GET",
  *           "path" = "/booksrent",
- *           "security"="is_granted('ROLE_MANAGER')",
- *           "security_message"="Vous ne pouvez avoir accès a tous les pret.",           
- *           "normalization_context" = {
- *              "groups" = {"get_role_member"},
- *           }
+ *           "security" = "is_granted('ROLE_MANAGER')",
+ *           "security_message" = "Vous ne pouvez avoir accès a tous les pret.",           
  *        },
  *       "post"={
  *           "method" = "POST",  
+ *           "path" = "/booksrent",
+ *           "denormalizationContext"= {
+ *                "groups" = {"rent_post_role_member"}
+ *           }
  *        }
  *   },
  *   itemOperations={
@@ -43,7 +49,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *               "security"="is_granted('ROLE_MANAGER')",
  *               "security_message"="Vous n'avez pas les droits d'acceder à cette ressource",
  *               "denormalizationContext" = {
- *                   "groups"={"putManager"}
+ *                   "groups"={"put_manager"}
  *               }
  *           },
  *           "delete_admin"={
@@ -54,7 +60,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *           }  
  *    }
  * )
- * @ORM\HasLifecycleCallbacks()
  */
 class BookRent
 {
@@ -79,14 +84,14 @@ class BookRent
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"putManager","get_role_manager"})
+     * @Groups({"put_manager","get_role_manager"})
      */
     private $dateRealReturn;
 
     /**
      * @ORM\ManyToOne(targetEntity=Book::class, inversedBy="bookRents")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"get_role_member","get_role_manager","put_admin"})
+     * @Groups({"rent_post_role_member"})
      */
     private $book;
 

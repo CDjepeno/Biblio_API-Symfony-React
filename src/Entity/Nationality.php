@@ -4,14 +4,28 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\NationalityRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=NationalityRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *      attributes={
+ *          "order"={
+ *              "title":"ASC"
+ *          }
+ *      }
+ * )
+ * @ApiFilter(
+ *      SearchFilter::class,
+ *      properties={
+ *          "title":"ipartial"
+ *      }
+ * )
  */
 class Nationality
 {
@@ -24,6 +38,7 @@ class Nationality
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get_author_role_member"})
      */
     private $title;
 

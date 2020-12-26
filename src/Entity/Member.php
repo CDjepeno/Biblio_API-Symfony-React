@@ -21,10 +21,14 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *              "method" = "GET",
  *              "path" = "/members",
  *              "security"="is_granted('ROLE_MANAGER')",
- *              "security_message"="Vous ne pouvez avoir accès a tous les membres.",           
+ *              "security_message"="Vous ne pouvez avoir accès a tous les membres.",
+ *              "normalizationContext" = {
+ *                   "groups" = {"get_role_member"}
+ *               }           
  *          },
  *          "post"={
  *              "method" = "POST",
+ *              "path" = "/members/{id}",
  *              "security"="is_granted('ROLE_MANAGER')",
  *              "security_message"="Vous ne pouvez avoir accès a tous les membres.", 
  *              "normalization_context" = {
@@ -53,16 +57,19 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *        },
  *        "put"={
  *            "method" = "PUT",
- *            "path" = "/bookrent/{id}",
- *            "security"="is_granted('ROLE_USER') and object.getMember() == user or is_granted('ROLE_MANAGER')",
+ *            "path" = "/member/{id}",
+ *            "security"="is_granted('ROLE_MANAGER')",
  *            "security_message"="Vous ne pouvez avoir accès qu'a vos propres prêts.",
  *            "denormalizationContext" = {
- *                 "groups"={"put_member"}
- *             }
+ *                 "groups"={"put_manager"}
+ *             },
+ *             "normalizationContext" = {
+ *                   "groups" = {"get_role_member"}
+ *               }    
  *         },
  *         "delete_admin"={
  *            "method" = "DELETE",
- *            "path" = "/bookrent/{id}",
+ *            "path" = "/member/{id}",
  *            "security"="is_granted('ROLE_ADMIN')",
  *            "security_message"="Vous n'avez pas les droits d'acceder à cette ressource"
  *          }  
@@ -77,6 +84,7 @@ class Member implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"get_role_member"})
      */
     private $id;
 
@@ -106,7 +114,7 @@ class Member implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"post_manager", "get_role_member"})
+     * @Groups({"post_manager", "get_role_member","put_member"})
      */
     private $mail;
 

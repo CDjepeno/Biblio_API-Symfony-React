@@ -85,7 +85,6 @@ class Editor
                 $book->setEditor(null);
             }
         }
-
         return $this;
     }
 }

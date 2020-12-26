@@ -56,7 +56,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              "security"="is_granted('ROLE_MANAGER')",
  *              "security_message"="Vous n'avez pas les droits d'acceder à cette ressource",
  *              "denormalizationContext" = {
- *                  "groups"={"putManager"}
+ *                  "groups"={"put_manager"}
  *               }
  *           },
  *            "delete_admin"={
@@ -82,13 +82,13 @@ class Book
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_role_member","putManager"})
+     * @Groups({"get_role_member","put_manager"})
      */
     private $isbn;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_role_member","putManager"})
+     * @Groups({"get_role_member","put_manager"})
      * 
      */
     private $title;
@@ -110,28 +110,28 @@ class Book
     /**
      * @ORM\ManyToOne(targetEntity=Editor::class, inversedBy="books")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"get_role_member","putManager"})
+     * @Groups({"get_role_member","put_manager"})
      */
     private $editor;
 
     /**
      * @ORM\ManyToOne(targetEntity=Author::class, inversedBy="books")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"get_role_member","putManager"})
+     * @Groups({"get_role_member","put_manager"})
      * 
      */
     private $author;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"get_role_member","putManager"})
+     * @Groups({"get_role_member","put_manager"})
      * 
      */
     private $year;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_role_member","putManager"})
+     * @Groups({"get_role_member","put_manager"})
      */
     private $langue;
 
