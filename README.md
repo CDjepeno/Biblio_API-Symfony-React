@@ -3,6 +3,7 @@
 # Biblio_API
 (Symfony) Création d'une api d'une bibliothèque en ligne
 - Utilisation d'ApiPlatform.
+- Gestion de l'authentification JWT.
 - Controller personalisé.
 - Gestion des évènements avec les subscribers.
 - Groupe de sérialization et de désérialization.
