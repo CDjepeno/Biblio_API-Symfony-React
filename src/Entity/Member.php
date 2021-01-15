@@ -54,6 +54,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *         "getNbRents"={
  *              "method"="GET",
  *              "route_name"="member_rent_count",
+ *              "swagger_context"={
+ *                  "summary"="Invcremez",
+ *                  "description"="incremenlskh lsdmfj "
+ *              }
  *        },
  *        "put"={
  *            "method" = "PUT",

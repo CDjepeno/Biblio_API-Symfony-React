@@ -20,6 +20,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ApiAuthorController extends AbstractController
 {
     /**
+     * @Route("/")
+     */
+    public function home(): Response
+    {
+        return $this->render('app/index.html.twig');
+    }
+    /**
      * @Route("/api/authors", name="api_authors", methods={"GET"})
      */
     public function list(AuthorRepository $repo, SerializerInterface $serializer): Response
