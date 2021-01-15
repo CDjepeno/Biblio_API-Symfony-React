@@ -1,9 +1,19 @@
 import React from 'react';
 import ReactDOM from "react-dom";
+import Main from './pages/main';
 import './styles/app.scss';
 
 const App = () => {
-    return <h1>Bonjour</h1>
+    return(
+    <>
+        <Main/>
+    </>  
+    )
+
+
+
+
+
 }
 const rootElement = document.getElementById("root");
 
