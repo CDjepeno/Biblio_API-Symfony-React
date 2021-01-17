@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
   },
   image: {
-    backgroundImage: 'url(https://bretteville50110.fr/wp-content/uploads/2019/02/images-bibliotheque.jpg)',
+    backgroundImage: 'url(https://www.archimag.com/sites/archimag.com/files/styles/article/public/web_articles/image/bibliotheque.jpg?itok=AnndQaIa)',
     backgroundRepeat: 'no-repeat',
     backgroundColor:
       theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login = () => {
+const Register = () => {
   const classes = useStyles();
 
   return (
@@ -70,7 +70,7 @@ const Login = () => {
             {/* <LockOutlinedIcon /> */}
           </Avatar>
           <Typography component="h1" variant="h5">
-            Connexion
+            Crée un compte
           </Typography>
           <form className={classes.form} noValidate>
             <TextField
@@ -78,10 +78,10 @@ const Login = () => {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="firstname"
+              label="Prenom"
+              name="firstname"
+              autoComplete="prenom"
               autoFocus
             />
             <TextField
@@ -89,16 +89,79 @@ const Login = () => {
               margin="normal"
               required
               fullWidth
-              name="password"
-              label="Password"
-              type="password"
+              id="lastname"
+              label="Nom"
+              name="lastname"
+              autoComplete="nom"
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="address"
+              label="Adresse"
+              name="address"
+              autoComplete="adresse"
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="communeCode"
+              label="Code postal"
+              name="communeCode"
+              autoComplete="Code postal"
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="mail"
+              label="Email"
+              name="mail"
+              autoComplete="Email"
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="phone"
+              label="Numéro de télephone"
+              name="phone"
+              autoComplete="Numéro de téléphone"
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
               id="password"
-              autoComplete="current-password"
+              label="Mot de passe"
+              name="password"
+              autoComplete="Mot de passe"
+              autoFocus
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Se souvenir de moi"
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="password"
+              label="Confirmer votre mot de passe"
+              name="password"
+              autoComplete="Confirmer votre mot de passe"
+              autoFocus
             />
+           
             <Button
               type="submit"
               fullWidth
@@ -106,20 +169,8 @@ const Login = () => {
               color="primary"
               className={classes.submit}
             >
-              Connexion
+              Crée un compte
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Mot de passe oublié?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Vous n'avez pas de compte ? Crée un compte"}
-                </Link>
-              </Grid>
-            </Grid>
             <Box mt={5}>
               <Copyright />
             </Box>
@@ -129,4 +180,4 @@ const Login = () => {
     </Grid>
   );
 }
-export default Login;
+export default Register;
