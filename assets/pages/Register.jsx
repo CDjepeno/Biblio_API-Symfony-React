@@ -78,6 +78,7 @@ const Register = () => {
               margin="normal"
               required
               fullWidth
+              size="small"
               id="firstname"
               label="Prenom"
               name="firstname"
@@ -89,6 +90,7 @@ const Register = () => {
               margin="normal"
               required
               fullWidth
+              size="small"
               id="lastname"
               label="Nom"
               name="lastname"
@@ -100,6 +102,7 @@ const Register = () => {
               margin="normal"
               required
               fullWidth
+              size="small"
               id="address"
               label="Adresse"
               name="address"
@@ -111,6 +114,7 @@ const Register = () => {
               margin="normal"
               required
               fullWidth
+              size="small"
               id="communeCode"
               label="Code postal"
               name="communeCode"
@@ -122,6 +126,7 @@ const Register = () => {
               margin="normal"
               required
               fullWidth
+              size="small"
               id="mail"
               label="Email"
               name="mail"
@@ -133,6 +138,7 @@ const Register = () => {
               margin="normal"
               required
               fullWidth
+              size="small"
               id="phone"
               label="Numéro de télephone"
               name="phone"
@@ -144,6 +150,7 @@ const Register = () => {
               margin="normal"
               required
               fullWidth
+              size="small"
               id="password"
               label="Mot de passe"
               name="password"
@@ -155,6 +162,7 @@ const Register = () => {
               margin="normal"
               required
               fullWidth
+              size="small"
               id="password"
               label="Confirmer votre mot de passe"
               name="password"
