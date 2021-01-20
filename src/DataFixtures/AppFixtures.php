@@ -62,12 +62,15 @@ class AppFixtures extends Fixture
         }
          // Ont gère les genres
          $genres = ['Litterature','Terreur','Science','BD','Policier'];
+         $languages = ['french','italia','spanish','english','german'];
+
+         
          foreach($genres as $g){
              $genre = new Genre;
              $genre->setTitle($g);
-
+             
              $manager->persist($genre);
-
+             
              // Ont gère les livres
              for($b=0; $b<=mt_rand(3,5); $b++){
                  $book = new Book;
@@ -77,10 +80,13 @@ class AppFixtures extends Fixture
                      ->setPrice(mt_rand(3, 7))
                      ->setIsbn(45)
                      ->setYear(mt_rand(1990,1995))
-                     ->setLangue("italia")
+                     ->setPicture("https://picsum.photos/id/237/200/300")
                      ->setAuthor($author)
                      ->setEditor($editor)
                      ->setGenre($genre);
+                     foreach($languages as $l) {
+                        $book->setLangue($l);          
+                     }
                 $books[]=$book;
                 $manager->persist($book);
              }
