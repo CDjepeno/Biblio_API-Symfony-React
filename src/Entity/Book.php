@@ -29,6 +29,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              "path" = "/books",
  *              "normalization_context" = {
  *                  "groups" = {"get_role_member"},
+ *                  "enable_max_depth"=true
  *               }
  *           },
  *           "bestBook"={

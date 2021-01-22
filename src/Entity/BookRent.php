@@ -72,26 +72,26 @@ class BookRent
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"get_role_manager"})
+     * @Groups({"get_role_manager","get_role_member"})
      */
     private $dateRent;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"get_role_manager","put_manager"})
+     * @Groups({"get_role_manager","put_manager","get_role_member"})
      */
     private $dateReturn;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"put_manager","get_role_manager"})
+     * @Groups({"put_manager","get_role_manager","get_role_member"})
      */
     private $dateRealReturn;
 
     /**
      * @ORM\ManyToOne(targetEntity=Book::class, inversedBy="bookRents")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"rent_post_role_member"})
+     * @Groups({"rent_post_role_member","get_role_member"})
      */
     private $book;
 
