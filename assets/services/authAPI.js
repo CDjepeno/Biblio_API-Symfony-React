@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React from 'react';
+import { LOGIN_API } from '../config';
 
 export default class AuthService 
 {
@@ -9,7 +10,7 @@ export default class AuthService
             .then(response => response.data.token)
             .then(token => {
                 window.localStorage.setItem("authToken", token)
-                setAxiosToken(token)
+                this.setAxiosToken(token)
             })
     }
 

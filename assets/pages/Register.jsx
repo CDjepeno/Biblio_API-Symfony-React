@@ -76,7 +76,7 @@ const Register = () => {
               margin="normal"
               required
               fullWidth
-              size="small"
+              size = "small"
               id="firstname"
               label="Prenom"
               name="firstname"

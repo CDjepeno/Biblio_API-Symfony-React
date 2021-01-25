@@ -6,6 +6,7 @@ import './styles/app.scss';
 import { HashRouter, Switch, Route } from "react-router-dom";
 import Register from './pages/Register';
 import { AppBar, Toolbar, Typography } from '@material-ui/core';
+import Index from './pages';
 
 const App = () => {
     return(
@@ -14,7 +15,8 @@ const App = () => {
             <Switch>
                 <Route path="/login" component={Login}/>
                 <Route path="/register" component={Register}/>
-                <Route path="/" component={Main}/>
+                <Route path="/main" component={Main}/>
+                <Route path="/" component={Index}/>
             </Switch>
 
         </HashRouter>
