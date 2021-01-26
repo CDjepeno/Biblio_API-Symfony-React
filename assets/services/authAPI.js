@@ -14,6 +14,11 @@ export default class AuthService
             })
     }
 
+    static logout() {
+        window.localStorage.removeItem("authToken");
+        delete axios.defaults.headers["Authorization"];
+    }
+
     /**
      * Positionne le token JWT sur Axios
      * @param {string} token 

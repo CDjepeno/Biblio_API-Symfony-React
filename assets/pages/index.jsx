@@ -14,6 +14,7 @@ import Container from '@material-ui/core/Container';
 import BookService from '../services/bookAPI';
 import Link from '@material-ui/core/Link';
 import { NavLink } from 'react-router-dom';
+import AuthService from '../services/authAPI';
 
 function Copyright() {
   return (
@@ -68,7 +69,12 @@ const Index = (props) => {
     BookService.findAll()
     .then(books => setBooks(books))
   }, [])
-  console.log(books);
+  
+  const handleLogout = () => {
+    AuthService.logout();
+    setIsAuthenticated(false);
+    history.push("/login");
+  }
 
   const classes = useStyles();
   return ( 
@@ -80,9 +86,9 @@ const Index = (props) => {
             BiblioAPI
           </Typography>
           <Button  variant="contained" color="secondary" className="button_navbar">
-                <NavLink to="/register" justifyContent="flex-end" className="Nav_link">
+                <Link to="/register" justifyContent="flex-end" className="Nav_link" onClick={handleLogout}>
                     deconexion
-                </NavLink>        
+                </Link>        
             </Button>
         </Toolbar>
       </AppBar>
