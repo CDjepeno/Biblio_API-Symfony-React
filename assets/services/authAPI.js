@@ -1,7 +1,7 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import React from 'react';
-import { LOGIN_API } from '../config';
+import { LOGIN_API, REGISTER_API } from '../config';
 
 
 export default class AuthService 
@@ -14,6 +14,11 @@ export default class AuthService
                 window.localStorage.setItem("authToken", token)
                 this.setAxiosToken(token)
             })
+    }
+
+    static register(member) {
+        return axios 
+            .post(REGISTER_API, member)    
     }
 
     static setup() {

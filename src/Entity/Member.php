@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MemberRepository::class)
@@ -28,11 +29,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *          },
  *          "post"={
  *              "method" = "POST",
- *              "path" = "/members/{id}",
- *              "security"="is_granted('ROLE_MANAGER')",
- *              "security_message"="Vous ne pouvez avoir accès a tous les membres.", 
+ *              "path" = "/members",
  *              "normalization_context" = {
- *                  "groups" = {"post_manager"},
+ *                  "groups" = {"post_member"},
  *              }
  *          },
  *          "statNbRentPerMember"={
@@ -94,43 +93,55 @@ class Member implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"post_manager", "get_role_member","put_member", "put_manager"})
+     * @Groups({"post_member", "get_role_member","put_member", "put_manager"})
+     * @Assert\Length(min=3, minMessage="Le prenom doit fair plus de 3 caractères", max=255, maxMessage="Le prenom ne doit pas faire plus de 255 caractères")
+     * @Assert\NotBlank(message="Le prénom est obligatoire")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"post_manager", "get_role_member","put_member", "put_manager"})
+     * @Groups({"post_member", "get_role_member","put_member", "put_manager"})
+     * @Assert\Length(min=3, minMessage="Le nom doit fair plus de 3 caractères", max=255, maxMessage="Le nom ne doit pas faire plus de 255 caractères")
+     * @Assert\NotBlank(message="Le nom est obligatoire")
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"post_manager", "get_role_member","put_member", "put_manager"})
+     * @Groups({"post_member", "get_role_member","put_member", "put_manager"})
+     * @Assert\Length(min=3, minMessage="Le nom doit fair plus de 3 caractères", max=255, maxMessage="Le nom ne doit pas faire plus de 255 caractères")
+     * @Assert\NotBlank(message="L'adresse est obligatoire")
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"post_manager", "get_role_member","put_member", "put_manager"})
+     * @Groups({"post_member", "get_role_member","put_member", "put_manager"})
+     * @Assert\NotBlank(message="Votre code postal est obligatoire")
+     * @Assert\Type(type="numeric", message="Le code postal doit être un numérique !")
      */
     private $communeCode;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"post_manager", "get_role_member","put_member"})
+     * @Groups({"post_member", "get_role_member","put_member"})
+     * @Assert\NotBlank(message="Votre email est obligatoire")
+     * @Assert\Email(message="l'email n'est pas valide")
      */
     private $mail;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"post_manager", "get_role_member","put_member", "put_manager"})
+     * @Groups({"post_member", "get_role_member","put_member", "put_manager"})
+     * @Assert\NotBlank(message="Votre numéro est obligatoire")
+     * @Assert\Type(type="numeric", message="Le numéro de téléphone doit être un numérique !")
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"post_manager","put_member"})
+     * @Groups({"post_member","put_member"})
      */
     private $password;
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,6 +9,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import AuthService from '../services/authAPI';
 
 function Copyright() {
   return (
@@ -54,8 +55,60 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Register = () => {
+const Register = ({ history }) => {
   const classes = useStyles();
+
+  const [member, setMember] = useState({
+    firstname: "",
+    lastname: "",
+    address: "",
+    communeCode: "",
+    mail: "",
+    phone: "",
+    password: "",
+    passwordConfirm: ""
+  })
+
+  const [error, setError] = useState({
+    firstname: "",
+    lastname: "",
+    address: "",
+    communeCode: "",
+    mail: "",
+    phone: "",
+    password: "",
+    passwordConfirm: ""
+  })
+
+  const handleChange = ({ currentTarget }) => {
+    const {value, name} = currentTarget;
+    setMember({...member, [name]: value})
+  }
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+
+		const apiError = {};
+		if(member.password !== member.passwordConfirm){
+			apiError.passwordConfirm = "Votre confirmation de mot de passe n'est pas conforme avec le mot de passe"
+			setError(apiError)
+			return;
+		}
+		
+		try {
+			await AuthService.register(member)
+			setError({})
+			history.replace('/login')
+		} catch ({ response }) {
+			const {violations} = response.data;
+			if(violations) {    
+				violations.forEach(({propertyPath, message}) => {
+					apiError[propertyPath] = message;
+				})
+				setError(apiError);
+			}
+		}
+	}
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -69,8 +122,11 @@ const Register = () => {
           <Typography component="h1" variant="h5">
             Crée un compte
           </Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <TextField
+              value={member.firstname}
+              onChange={handleChange}
+              error={error.firstname}
               variant="outlined"
               margin="normal"
               required
@@ -82,7 +138,16 @@ const Register = () => {
               autoComplete="prenom"
               autoFocus
             />
+			{/* error */}
+			{error.firstname &&
+				<div className="card-panel red accent-1"> 
+				{error.firstname} 
+				</div>
+			} 
             <TextField
+              value={member.lastname}
+              onChange={handleChange}
+              error={error.lastname}
               variant="outlined"
               margin="normal"
               required
@@ -94,7 +159,16 @@ const Register = () => {
               autoComplete="nom"
               autoFocus
             />
+			{/* error */}
+			{error.lastname &&
+				<div className="card-panel red accent-1"> 
+				{error.lastname} 
+				</div>
+			} 
             <TextField
+              value={member.address}
+              onChange={handleChange}
+              error={error.address}
               variant="outlined"
               margin="normal"
               required
@@ -106,7 +180,16 @@ const Register = () => {
               autoComplete="adresse"
               autoFocus
             />
+			{/* error */}
+			{error.address &&
+				<div className="card-panel red accent-1"> 
+				{error.address} 
+				</div>
+			} 
             <TextField
+              value={member.communeCode}
+              onChange={handleChange}
+              error={error.communeCode}
               variant="outlined"
               margin="normal"
               required
@@ -118,7 +201,16 @@ const Register = () => {
               autoComplete="Code postal"
               autoFocus
             />
+			{/* error */}
+			{error.communeCode &&
+				<div className="card-panel red accent-1"> 
+				{error.communeCode} 
+				</div>
+			} 
             <TextField
+              value={member.mail}
+              onChange={handleChange}
+              error={error.mail}
               variant="outlined"
               margin="normal"
               required
@@ -130,7 +222,16 @@ const Register = () => {
               autoComplete="Email"
               autoFocus
             />
+			{/* error */}
+			{error.mail &&
+				<div className="card-panel red accent-1"> 
+				{error.mail} 
+				</div>
+			} 
             <TextField
+              value={member.phone}
+              onChange={handleChange}
+              error={error.phone}
               variant="outlined"
               margin="normal"
               required
@@ -142,7 +243,16 @@ const Register = () => {
               autoComplete="Numéro de téléphone"
               autoFocus
             />
+			{/* error */}
+			{error.phone &&
+				<div className="card-panel red accent-1"> 
+				{error.phone} 
+				</div>
+			} 
             <TextField
+              value={member.password}
+              onChange={handleChange}
+              error={error.password}
               variant="outlined"
               margin="normal"
               required
@@ -151,21 +261,38 @@ const Register = () => {
               id="password"
               label="Mot de passe"
               name="password"
-              autoComplete="Mot de passe"
+			  autoComplete="Mot de passe"
+			  type="password"
               autoFocus
             />
+			{/* error */}
+			{error.password &&
+				<div className="card-panel red accent-1"> 
+				{error.password} 
+				</div>
+			} 
             <TextField
+              value={member.passwordConfirm}
+              onChange={handleChange}
+              error={error.passwordConfirm}
               variant="outlined"
               margin="normal"
               required
               fullWidth
               size="small"
-              id="password"
+              id="password2"
               label="Confirmer votre mot de passe"
-              name="password"
-              autoComplete="Confirmer votre mot de passe"
+              name="passwordConfirm"
+			  autoComplete="Confirmer votre mot de passe"
+			  type="password"
               autoFocus
             />
+			{/* error */}
+			{error.passwordConfirm &&
+				<div className="card-panel red accent-1"> 
+				{error.passwordConfirm} 
+				</div>
+			} 
            
             <Button
               type="submit"
