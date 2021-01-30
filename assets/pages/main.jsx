@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import BookService from '../services/bookAPI';
+import bookAPI from '../services/bookAPI';
 
 function Copyright() {
   return (
@@ -64,7 +65,7 @@ const Main = (props) => {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    BookService.findAll()
+    bookAPI.findAll()
     .then(books => setBooks(books))
   }, [])
   console.log(books);
@@ -73,13 +74,6 @@ const Main = (props) => {
   return ( 
       <React.Fragment>
       <CssBaseline />
-      <AppBar position="relative">
-        <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
-            BiblioAPI
-          </Typography>
-        </Toolbar>
-      </AppBar>
       <main>
         {/* Hero unit */}
         <div className={classes.heroContent}>

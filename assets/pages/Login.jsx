@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import AuthService from '../services/authAPI';
 import authContext from '../context/authContext';
+import BookService from '../services/bookAPI';
 
 function Copyright() {
   return (
@@ -80,7 +81,7 @@ const Login = ({ history }) => {
             await AuthService.login(credentials);
             setError("")
             setIsAuthenticated(true)
-            history.replace("/main")
+            history.push("/main")
         } catch (error) {
             console.log(error);
             setError("Aucun compte ne possède cette adresse ou alors les informations ne correspondent pas")
@@ -108,7 +109,6 @@ const Login = ({ history }) => {
                     margin="normal"
                     required
                     fullWidth
-                    // id="email"
                     label="Email Address"
                     name="mail"
                     autoComplete="email"

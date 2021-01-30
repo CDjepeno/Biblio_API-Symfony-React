@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { LOGIN_API } from '../config';
+import BookService from './bookAPI'
 
 export default class AuthService 
 {
@@ -12,11 +13,11 @@ export default class AuthService
                 window.localStorage.setItem("authToken", token)
                 this.setAxiosToken(token)
             })
-    }
-
-    static logout() {
-        window.localStorage.removeItem("authToken");
-        delete axios.defaults.headers["Authorization"];
+        }
+        
+        static logout() {
+            window.localStorage.removeItem("authToken");
+            delete axios.defaults.headers["Authorization"];
     }
 
     /**

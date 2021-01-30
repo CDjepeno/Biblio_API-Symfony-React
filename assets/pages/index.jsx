@@ -70,28 +70,13 @@ const Index = (props) => {
     .then(books => setBooks(books))
   }, [])
   
-  const handleLogout = () => {
-    AuthService.logout();
-    setIsAuthenticated(false);
-    history.push("/login");
-  }
+  
 
   const classes = useStyles();
   return ( 
       <React.Fragment>
       <CssBaseline />
-      <AppBar position="relative">
-        <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
-            BiblioAPI
-          </Typography>
-          <Button  variant="contained" color="secondary" className="button_navbar">
-                <Link to="/register" justifyContent="flex-end" className="Nav_link" onClick={handleLogout}>
-                    deconexion
-                </Link>        
-            </Button>
-        </Toolbar>
-      </AppBar>
+      
       <main>
         {/* Hero unit */}
         <div className={classes.heroContent}>
