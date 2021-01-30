@@ -3,8 +3,8 @@ body {
 
     .button_navbar{
         color: #fff;
-        font-size: 1rem;
-        line-height: 1rem;
+        font-size: 0.8rem;
+        line-height: 0.5rem;
         text-decoration: none;
         margin-left: auto;
     }
@@ -16,6 +16,12 @@ body {
     }
     .MuiLink-underlineNone {
         color: white;
+    }
+    #main {
+        background-image: url(https://bretteville50110.fr/wp-content/uploads/2019/02/images-bibliotheque.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 30rem;
     }
 
 }

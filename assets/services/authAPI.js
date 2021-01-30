@@ -1,7 +1,8 @@
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 import React from 'react';
 import { LOGIN_API } from '../config';
-import BookService from './bookAPI'
+
 
 export default class AuthService 
 {
@@ -13,11 +14,34 @@ export default class AuthService
                 window.localStorage.setItem("authToken", token)
                 this.setAxiosToken(token)
             })
+    }
+
+    static setup() {
+        const token = window.localStorage.getItem("authToken");
+        if(token) {
+            const jwtData = jwtDecode(token);   
+            if(jwtData.exp * 1000 > new Date().getTime()) {
+                this.setAxiosToken(token)
+            }
         }
-        
-        static logout() {
-            window.localStorage.removeItem("authToken");
-            delete axios.defaults.headers["Authorization"];
+    }
+
+    static isAuthenticated() {
+        const token = window.localStorage.getItem("authToken");
+        if(token) {
+            const jwtData = jwtDecode(token);   
+            if(jwtData.exp * 1000 > new Date().getTime()) {
+                this.setAxiosToken(token)
+                return true
+            }
+            return false;
+        }
+        return false;
+    }
+
+    static logout() {
+        window.localStorage.removeItem("authToken");
+        delete axios.defaults.headers["Authorization"];
     }
 
     /**
@@ -27,4 +51,5 @@ export default class AuthService
     static setAxiosToken(token) {
         axios.defaults.headers["Authorization"] = "Bearer " + token;
     }
+
 } 
