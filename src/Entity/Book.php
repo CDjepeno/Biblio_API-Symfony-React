@@ -149,6 +149,7 @@ class Book
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get_role_member"})
      */
     private $picture;
 

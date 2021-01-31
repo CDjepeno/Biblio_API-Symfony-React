@@ -1,5 +1,5 @@
 <?php
-namespace App\Event;
+namespace App\Events;
 
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\ViewEvent;

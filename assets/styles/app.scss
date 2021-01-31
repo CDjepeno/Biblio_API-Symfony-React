@@ -1,3 +1,13 @@
+/******** blocks ********/
+%hover-img-up {
+    -webkit-transform : scale(0.9);
+	transform         : scale(0.9);
+}
+
+*:hover {
+	transition : all .2s ease 0s;
+}
+
 body {
     background-color: lightgray;
 
@@ -22,6 +32,59 @@ body {
         background-repeat: no-repeat;
         background-size: cover;
         height: 30rem;
+    }
+    // Books main_Page
+    .img-bookcover {
+        width: 200px;
+        height: 340px;
+        border: 1px solid #eeeeee;
+        margin-bottom: 40px;
+        &:hover {
+            @extend %hover-img-up;
+        }
+    }
+
+    // Pagination
+    .md-ui.component-pagination {
+        margin: auto;
+        list-style: none;
+        padding: 8px;
+        li {
+            border-radius: 2px;
+            color: rgba(33,33,33 ,1);
+            display: inline-block;
+            margin: 0;
+            transition: .15s ease-in;
+            cursor: pointer;
+            &:hover {
+                background: #F50057;
+            }
+        }
+        .pagination-number,
+        .pagination-arrow i {
+            vertical-align: middle;
+        }
+        .pagination-numberfalse {
+            font-size: 20px;
+            margin-right: 5px;
+        }
+        .pagination-number {
+            font-family: "Roboto", sans-serif;
+            font-size: 20px;
+            text-align: center;
+            line-height: 24px;
+            min-width: 40px;
+            padding: 8px 0;
+            margin-right: 5px;
+            &.current-number {
+                background: #3F51B5;
+                color: white;
+            }
+        }
+        .pagination-arrow i {
+            font-size: 24px;
+            padding: 8px;
+        }
     }
 
 }
