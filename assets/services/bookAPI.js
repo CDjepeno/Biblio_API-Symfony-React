@@ -12,6 +12,11 @@ export default class BookService
             .catch(error => this.handleError(error))
     }
 
+    static addBook(book) {
+        return axios
+            .post(BOOKS_API, book)
+    }
+
     static handleError(error) {
         console.error(error);
     }

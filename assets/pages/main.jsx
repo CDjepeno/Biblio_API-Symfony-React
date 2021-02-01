@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -14,10 +10,7 @@ import bookAPI from "../services/bookAPI";
 import Pagination from "../componant/Pagination";
 import { InputBase } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
-// import Pagination from '@material-ui/lab/Pagination';
-// import Pagination from '@material-ui/lab/Pagination';
-// or
-// import { Pagination } from '@material-ui/lab';
+
 
 function Copyright() {
   return (
@@ -162,7 +155,7 @@ const Main = () => {
 					<Grid container spacing={1}>
 						{paginatedBooks.map(book => (
 							<Grid item  xs={12} sm={8} md={3} key={book.id}>
-									<a class="title-book">{book.title}</a>
+									<a className="title-book">{book.title}</a>
 								<Link to="#">
 									<img src={book.picture} alt={book.title} className="img-bookcover"/>
 								</Link>

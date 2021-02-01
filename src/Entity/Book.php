@@ -2,25 +2,25 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\BookRent;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BookRepository;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+
 
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
  * @ApiResource(
  *      attributes={
  *          "order"={
- *              "title":"ASC",
- *              "price":"DESC"
+ *              "title":"ASC"
  *          }
  *       },
  *       collectionOperations={
@@ -69,7 +69,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      }
  * )
  * @ApiFilter(SearchFilter::class, properties={"title": "ipartial", "author": "exact", "genre": "exact"})
- * @ApiFilter(OrderFilter::class, properties={"title","price","author.firstname"})
+ * @ApiFilter(OrderFilter::class, properties={"title","author.firstname"})
  * @ApiFilter(PropertyFilter::class, arguments={"parameterName":"properties","overrideDefaultProperties":"false","whitelist"={"isbn","title"}})
  */
 class Book
@@ -95,15 +95,9 @@ class Book
     private $title;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
-     * @Groups({"get_role_manager", "put_admin"})
-     * 
-     */
-    private $price;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Genre::class, inversedBy="books")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"get_role_member"})
      * 
      */
     private $genre;
@@ -183,18 +177,6 @@ class Book
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getPrice(): ?float
-    {
-        return $this->price;
-    }
-
-    public function setPrice(?float $price): self
-    {
-        $this->price = $price;
 
         return $this;
     }

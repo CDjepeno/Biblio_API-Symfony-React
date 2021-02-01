@@ -101,7 +101,7 @@ const Login = ({ history }) => {
             <Typography component="h1" variant="h5">
             Connexion
             </Typography>
-            <form className={classes.form} method="POST"  onSubmit={handleSubmit}>
+            <form className={classes.form} onSubmit={handleSubmit}>
                 <TextField
                     value={credentials.username}
                     onChange={handleChange}
