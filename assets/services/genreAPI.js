@@ -1,12 +1,14 @@
 import axios from 'axios';
 import React from 'react';
-import { EDITOR_API } from '../config';
+import { GENRE_API } from '../config';
 
-export default class EditorServices 
+
+
+export default class GenreServices
 {
     static findAll() {
-        return axios
-            .get(EDITOR_API)
+        return axios 
+            .get(GENRE_API)
             .then(response => response.data['hydra:member'])
             .catch(error => this.handleError(error))
     }

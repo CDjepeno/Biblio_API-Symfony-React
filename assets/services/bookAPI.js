@@ -14,7 +14,13 @@ export default class BookService
 
     static addBook(book) {
         return axios
-            .post(BOOKS_API, book)
+            .post(BOOKS_API, {
+                ...book, 
+                author:`/apiPlatform/authors/${book.author}`,
+                genre:`/apiPlatform/genres/${book.genre}`,
+                editor:`/apiPlatform/editors/${book.editor}`,
+            })
+            .then(response => response.data);
     }
 
     static handleError(error) {

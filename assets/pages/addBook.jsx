@@ -1,10 +1,11 @@
-import { Button, Container, TextField } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import { Button, Container, FormControl,  InputLabel,  makeStyles,  MenuItem, Select, TextField } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import AuthorServices from '../services/authorAPI';
-import EditorServices from '../services/authorAPI';
+import BookService from '../services/bookAPI';
+import EditorServices from '../services/editorAPI';
+import GenreServices from '../services/genreAPI';
 
-const AddBook = () => {
+const AddBook = ({ history }) => {
 
     const [book, setBook]   = useState({
         isbn:"",
@@ -28,7 +29,7 @@ const AddBook = () => {
     });
     const [authors, setAuthors] = useState([]);
     const [editors, setEditors] = useState([]);
-    const [genres, setGenres] = useState([]);
+    const [genres, setGenres]   = useState([]);
 
     // Récupération des auteurs
     const fetchAuthors = async() => {
@@ -41,34 +42,55 @@ const AddBook = () => {
     }
 
     // Récupération des editeurs
-    const fetchEditor = async() => {
+    const fetchEditors = async() => {
         try {
-            const authors = await EditorServices.findAll();
-            setEditors(authors);
+            const editors = await EditorServices.findAll();
+            setEditors(editors);
         } catch (error) {
             console.log(error.message)
         }
     }
-
-    const handleChange = ({ currentTarget }) => {
-        const {name, value} = currentTarget;
-        setBook({...book, [name]: value})
+    // Récupération des genres
+    const fetchGenres = async() => {
+        try {
+            const genres = await GenreServices.findAll();
+            setGenres(genres);
+        } catch (error) {
+            console.log(error.message)
+        }
     }
     
-    const handleSubmit = (e) => {
-        e.prenventDefault();
+    const handleChange = ({ target }) => {
+        const {name, value} = target;
+        setBook({...book, [name]: "type" === "number" ? parseInt(value) : value})
+    }
+    
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(book);
         try {
-            console.log(book);
+            await BookService.addBook(book)
+            history.replace("/main")
         } catch (error) {   
             console.log(error.message);    
         }
     }
 
     useEffect(() => {
+        fetchEditors()
+        fetchGenres()
         fetchAuthors()
     },[])
 
-    console.log(authors);
+
+    const useStyles = makeStyles(theme => ({
+        formControl: {
+            minWidth: 920
+        }
+    }));
+
+    const classes = useStyles();
+
     return ( 
         <Container  maxWidth="md">
             <h1 align="center">Ajout d'un livre</h1>
@@ -84,7 +106,18 @@ const AddBook = () => {
                     name="isbn"
                     autoComplete="isbn"
                     autoFocus
-                    />
+                />
+                <FormControl className={classes.formControl}>
+                    <InputLabel>Genre</InputLabel>
+                    <Select name="genre" value={book.genre} onChange={handleChange}> 
+                        {genres.map(genre => 
+                            <MenuItem key={genre.id} value={genre.id} > 
+                                {genre.title}  
+                            </MenuItem>
+                        )}
+                    </Select>
+                </FormControl>
+                    <p>{book.genre}</p>
                 <TextField   
                     value={book.title}
                     onChange={handleChange}
@@ -96,43 +129,17 @@ const AddBook = () => {
                     name="title"
                     autoComplete="titre"
                     autoFocus
-                    />
-                <TextField   
-                    value={book.genre}
-                    onChange={handleChange}
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Genre"
-                    name="genre"
-                    autoComplete="genre"
-                    autoFocus
-                    />
-                <TextField 
-                    value={book.editor}  
-                    onChange={handleChange}
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Editeur"
-                    name="editor"
-                    autoComplete="editeur"
-                    autoFocus
-                    />
-                <TextField   
-                    value={book.author}
-                    onChange={handleChange}
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Auteur"
-                    name="author"
-                    autoComplete="author"
-                    autoFocus
-                    />
+                />
+                <FormControl className={classes.formControl}>
+                    <InputLabel>Editeur</InputLabel>
+                    <Select name="editor" value={book.editor} onChange={handleChange}> 
+                        {editors.map(editor => 
+                            <MenuItem key={editor.id} value={editor.id} > 
+                                {editor.firstname}  
+                            </MenuItem>
+                        )}
+                    </Select>
+                </FormControl>
                 <TextField   
                     value={book.year}
                     onChange={handleChange}
@@ -144,7 +151,18 @@ const AddBook = () => {
                     name="year"
                     autoComplete="année"
                     autoFocus
-                    />
+                    type="number"
+                />
+                <FormControl className={classes.formControl}>
+                    <InputLabel>Auteur</InputLabel>
+                    <Select name="author" value={book.author.id} onChange={handleChange}> 
+                        {authors.map(author => 
+                            <MenuItem key={author.id} value={author.id} > 
+                                {author.firstname} {author.lastname}  
+                            </MenuItem>
+                        )}
+                    </Select>
+                </FormControl>
                 <TextField
                     value={book.langue}   
                     onChange={handleChange}

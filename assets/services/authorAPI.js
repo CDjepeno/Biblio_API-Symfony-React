@@ -10,4 +10,8 @@ export default class AuthorServices
             .then(response => response.data['hydra:member'])
             .catch(error => this.handleError(error))
     }
+
+    static handleError(error) {
+        console.error(error);
+    }
 }

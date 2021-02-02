@@ -23,7 +23,7 @@ final class BookContextBuilder implements SerializerContextBuilderInterface
         $context       = $this->decorated->createFromRequest($request, $normalization, $extractedAttributes);
         $resourceClass = $context['resource_class'] ?? null;
 
-        if ($resourceClass === Book::class && isset($context['groups']) && $this->authorizationChecker->isGranted('ROLE_MANAGER') &&  $normalization === true) {
+        if ($resourceClass === Book::class && isset($context['groups']) && $this->authorizationChecker->isGranted('ROLE_MANAGER') && $normalization === true) {
             $context['groups'][] = 'get_role_manager';
         }
         if ($resourceClass === Book::class && isset($context['groups']) && $this->authorizationChecker->isGranted('ROLE_ADMIN') &&  $normalization === false) {

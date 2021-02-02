@@ -86,6 +86,10 @@ body {
             font-size: 24px;
             padding: 8px;
         }
+
+        .MuiSelect-root .MuiSelect-select .MuiSelect-selectMenu .MuiInputBase-input .MuiInput-input  {
+            width: 55rem;
+        }
     }
 
 }

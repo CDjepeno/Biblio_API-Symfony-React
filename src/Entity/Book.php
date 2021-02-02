@@ -29,7 +29,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              "path" = "/books",
  *              "normalization_context" = {
  *                  "groups" = {"get_role_member"},
- *                  "enable_max_depth"=true
  *               }
  *           },
  *           "bestBook"={
@@ -83,13 +82,13 @@ class Book
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_role_member","put_manager"})
+     * @Groups({"get_role_member","put_manager","get_role_manager"})
      */
     private $isbn;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_role_member","put_manager"})
+     * @Groups({"get_role_member","put_manager","get_role_manager"})
      * 
      */
     private $title;
@@ -97,7 +96,7 @@ class Book
     /**
      * @ORM\ManyToOne(targetEntity=Genre::class, inversedBy="books")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"get_role_member"})
+     * @Groups({"get_role_member","get_role_manager"})
      * 
      */
     private $genre;
@@ -105,34 +104,33 @@ class Book
     /**
      * @ORM\ManyToOne(targetEntity=Editor::class, inversedBy="books")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"get_role_member","put_manager"})
+     * @Groups({"get_role_member","put_manager","get_role_manager"})
      */
     private $editor;
 
     /**
      * @ORM\ManyToOne(targetEntity=Author::class, inversedBy="books")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"get_role_member","put_manager"})
+     * @Groups({"get_role_member","put_manager","get_role_manager"})
      * 
      */
     private $author;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"get_role_member","put_manager"})
+     * @ORM\Column(type="string", nullable=true)
+     * @Groups({"get_role_member","put_manager","get_role_manager"})
      * 
      */
     private $year;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_role_member","put_manager"})
+     * @Groups({"get_role_member","put_manager","get_role_manager"})
      */
     private $langue;
 
     /**
      * @ORM\OneToMany(targetEntity=BookRent::class, mappedBy="book")
-     * @Groups({"get_role_manager"})
      */
     private $bookRents;
 
