@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Main = () => {
+const Main = ({ history }) => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [books, setBooks] 		    = useState([]);
 	const [search, setSearch]           = useState("")
@@ -83,6 +83,10 @@ const Main = () => {
 		setCurrentPage(1);
 	}
 
+	const goToBook = (id) => {
+		history.push(`/book/${id}`)
+	}
+
 	useEffect(() => {
 		fetchBooks();
 	}, []);
@@ -96,7 +100,9 @@ const Main = () => {
 	
 	// pagination des données
 	const paginatedBooks = Pagination.getData(filteredBooks, currentPage, itemsPerPage);
-
+	// paginatedBooks.map(book => {
+	// 	console.log(book.isbn)
+	// });
 	return (
 		<>
 		<React.Fragment>
@@ -154,10 +160,10 @@ const Main = () => {
 				<Container className={classes.cardGrid} maxWidth="md">
 					<Grid container spacing={1}>
 						{paginatedBooks.map(book => (
-							<Grid item  xs={12} sm={8} md={3} key={book.id}>
+							<Grid item  xs={12} sm={8} md={3} key={book.isbn} >
 									<a className="title-book">{book.title}</a>
 								<Link to="#">
-									<img src={book.picture} alt={book.title} className="img-bookcover"/>
+									<img src={book.picture} alt={book.title} className="img-bookcover" onClick={() => goToBook(book.id)}/>
 								</Link>
 							</Grid>
 						))}

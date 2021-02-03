@@ -5,6 +5,7 @@ import MenuAppBar from "./componant/Navbar";
 import authContext from "./context/authContext";
 import Index from "./pages";
 import AddBook from "./pages/addBook";
+import Book from "./pages/book";
 import Login from "./pages/Login";
 import Main from "./pages/Main";
 import Register from "./pages/Register";
@@ -33,6 +34,7 @@ const App = () => {
           <Switch>
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
+            <Route path="/book/:id" component={Book} />
             <Route path="/addBook" component={AddBook} />
             <PrivateRoute path="/main" component={Main} />
             <Route path="/" component={Index} />

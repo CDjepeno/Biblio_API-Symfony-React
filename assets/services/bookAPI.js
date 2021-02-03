@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from 'react';
-import { BOOKS_API } from "../config";
+import { BOOKS_API, BOOK_API } from "../config";
 
 
 export default class BookService 
@@ -9,6 +9,13 @@ export default class BookService
         return axios 
             .get(BOOKS_API)
             .then(response => response.data['hydra:member'])
+            .catch(error => this.handleError(error))
+    }
+
+    static findOne(id) {
+        return axios
+            .get(`${BOOK_API}/${id}`)
+            .then(response => response.json())
             .catch(error => this.handleError(error))
     }
 
